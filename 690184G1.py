@@ -1,5 +1,4 @@
 import random
-from collections import Counter
 
 HMOD = 2147483647
 HBASE1 = random.randrange(HMOD)
@@ -45,8 +44,16 @@ class Hashing:
 
 def check(x):
     h1, h2 = h.get_hashes(x)
-    c = Counter((i, j) for i, j in zip(h1, h2))
-    return max(c.values())
+    ans = 1
+    for i in range(d):
+        cur = 1
+        for j in range(i + d, len(h1), d):
+            if h1[j] == h1[j - d] and h2[j - d] == h2[j - d]:
+                cur += 1
+                ans = max(ans, cur)
+            else:
+                cur = 1
+    return ans
 
 
 n, k, d = map(int, input().split())
